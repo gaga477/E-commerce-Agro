@@ -120,6 +120,7 @@
 
     <script src="https://js.paystack.co/v1/inline.js"></script>
     <script>
+        var API = "/api";
         var PRODUCTS = [
             { _id: "1", name: "Stock Fish", price: 8000, category: "seafood", image: "images/dried stockfish.jpeg" },
             { _id: "2", name: "Garri (Ijebu)", price: 3000, category: "grains", image: "images/ijabu garri.jpg" },
@@ -243,7 +244,7 @@
                 amount: total * 100,
                 currency: "NGN",
                 callback: function (response) {
-                    fetch("http://localhost:5000/api/orders", {
+                    fetch(API + "/orders", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ items: cart, total: total, paymentRef: response.reference })
@@ -268,6 +269,7 @@
             .then(function (data) { if (Array.isArray(data) && data.length) { products = data; displayProducts(); } })
             .catch(function () { });
     </script>
+
 
 </body>
 

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helen Motherland Agro Export | Global Nigerian Food Delivery</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-logo">&#127757; Helen Motherland Agro Export</div>
+        <ul class="nav-links" style="list-style:none; display:flex; gap:50px; align-items:center;">
+            <li><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="cart-btn" onclick="openCart()">
+                &#128722; Cart <span id="cart-count">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>From Nigeria to the World &#127757;</h1>
+            <p>Exporting authentic Nigerian food products globally</p>
+            <button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop Now</button>
+        </div>
+    </header>
+
+    <!-- ABOUT -->
+    <section id="about" class="about">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>About Us</h2>
+                <p>Helen Motherland Agro Export is a Nigerian food export company dedicated to bringing the finest
+                    authentic Nigerian food products to customers worldwide. From the rich soils of Nigeria, we source,
+                    process, and deliver premium quality food products to your doorstep — locally and internationally.
+                </p>
+                <p>Our mission is to connect the world with the rich flavours of Nigerian cuisine, ensuring every
+                    product meets the highest standards of quality, hygiene, and authenticity.</p>
+                <ul>
+                    <li>&#10003; 100% Authentic Nigerian Products</li>
+                    <li>&#10003; Worldwide Delivery</li>
+                    <li>&#10003; Quality Guaranteed</li>
+                    <li>&#10003; Trusted by Thousands of Customers</li>
+                </ul>
+            </div>
+            <div class="about-img">
+                <img src="images/helen.PNG" alt="helen"
+                    style="width:100%; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.12);">
+            </div>
+        </div>
+    </section>
+
+    <!-- VIDEO -->
+    <section class="video-section">
+        <h2>See Our Products in Action</h2>
+        <p>Watch how we source and process authentic Nigerian food products</p>
+        <div class="video-wrap">
+            <video autoplay muted loop playsinline controls>
+                <source src="images/food.mp4" type="video/mp4">
+            </video>
+        </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section id="products" class="products-section">
+        <h2>Our Products</h2>
+
+        <div class="categories">
+            <button class="active" onclick="filterCategory('all',this)">All</button>
+            <button onclick="filterCategory('grains',this)">Grains</button>
+            <button onclick="filterCategory('tubers',this)">Tubers</button>
+            <button onclick="filterCategory('spices',this)">Spices</button>
+            <button onclick="filterCategory('seafood',this)">Seafood</button>
+            <button onclick="filterCategory('vegetables',this)">Vegetables</button>
+        </div>
+
+        <div class="search-wrap">
+            <input type="text" id="search" placeholder="Search products..." oninput="displayProducts()">
+        </div>
+
+        <div id="product-grid" class="product-grid"></div>
+    </section>
+
+    <!-- CART MODAL -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <h2>&#128722; Your Cart</h2>
+            <ul id="cart-items">
+                <li class="cart-empty">Your cart is empty</li>
+            </ul>
+            <div class="cart-footer">
+                <h3>Total: &#8358;<span id="total">0</span></h3>
+                <button onclick="checkout()">Proceed to Payment</button>
+                <button class="btn-cancel" onclick="closeCart()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact">
+        <h2>Contact Us</h2>
+        <p>&#128231; info@helenmotherlandagroexport.com</p>
+        <p>&#128222; +234 803 254 3348</p>
+        <p>&#127760; Delivering worldwide from Nigeria</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Helen Motherland Agro Export. All rights reserved.</p>
+    </footer>
+
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script>
+        var API = "/api";
+        var PRODUCTS = [
+            { _id: "1", name: "Stock Fish", price: 8000, category: "seafood", image: "images/dried stockfish.jpeg" },
+            { _id: "2", name: "Garri (Ijebu)", price: 3000, category: "grains", image: "images/ijabu garri.jpg" },
+            { _id: "3", name: "Dried Ugu Leaf", price: 3000, category: "vegetables", image: "images/dry Ugu.jpg" },
+            { _id: "4", name: "Dried Bitter Leaf", price: 2800, category: "vegetables", image: "images/dried bitter leaf.jpg" },
+            { _id: "5", name: "Dried Uziza Leaf", price: 3200, category: "vegetables", image: "images/Dried Uziza Leaf.jpg" },
+            { _id: "6", name: "Rice", price: 45000, category: "grains", image: "images/Rice.jpg" },
+            { _id: "7", name: "Brown Beans", price: 12000, category: "grains", image: "images/Brown Beans.jpg" },
+            { _id: "8", name: "Yam Flour (Elubo)", price: 5000, category: "tubers", image: "images/Yam Flour.jpg" },
+            { _id: "9", name: "Plantain Flour", price: 4500, category: "tubers", image: "images/Plantain Flour.jpeg" },
+            { _id: "10", name: "Dried Yam Chips", price: 3500, category: "tubers", image: "images/Dried Yam Chips.jpg" },
+            { _id: "11", name: "Egusi Seeds", price: 4000, category: "spices", image: "images/Egusi Seeds.png" },
+            { _id: "12", name: "Ogbono Seeds", price: 4200, category: "spices", image: "images/Ogbono Seeds.jpg" },
+            { _id: "13", name: "Palm Oil (5L)", price: 7000, category: "spices", image: "images/palm-oil.jpg" },
+            { _id: "14", name: "Dried Pepper (Tatashe)", price: 2500, category: "spices", image: "images/Dried pepper.webp" },
+            { _id: "15", name: "Crayfish (Ground)", price: 4500, category: "seafood", image: "images/crayfish.jpg" },
+            { _id: "16", name: "Dried Cat Fish", price: 6000, category: "seafood", image: "images/dried catfish.jpg" },
+            { _id: "17", name: "Garri", price: 8000, category: "grains", image: "images/Garri.jpg" },
+            { _id: "18", name: "Dried Banga Pulp", price: 3500, category: "spices", image: "images/Dried Banga Pulp2.jpg" }
+        ];
+
+        var products = PRODUCTS.slice();
+        var cart = [];
+        var currentCategory = "all";
+
+        function displayProducts() {
+            var grid = document.getElementById("product-grid");
+            var search = document.getElementById("search").value.toLowerCase();
+            var filtered = products.filter(function (p) {
+                return (currentCategory === "all" || p.category === currentCategory) &&
+                    p.name.toLowerCase().indexOf(search) !== -1;
+            });
+            if (!filtered.length) {
+                grid.innerHTML = "<p class='empty'>No products found.</p>";
+                return;
+            }
+            grid.innerHTML = filtered.map(function (p) {
+                return '<div class="card">' +
+                    '<div class="card-img-wrap">' +
+                    '<img src="' + p.image + '" alt="' + p.name + '" onerror="this.src=\'https://placehold.co/300x180?text=No+Image\'">' +
+                    '<span class="badge">' + p.category + '</span>' +
+                    '</div>' +
+                    '<div class="card-body">' +
+                    '<h3>' + p.name + '</h3>' +
+                    '<p class="price">&#8358;' + Number(p.price).toLocaleString() + '</p>' +
+                    '<button onclick="addToCart(\'' + p._id + '\')">&#128722; Add to Cart</button>' +
+                    '</div>' +
+                    '</div>';
+            }).join("");
+        }
+
+        function filterCategory(cat, btn) {
+            currentCategory = cat;
+            document.querySelectorAll(".categories button").forEach(function (b) { b.classList.remove("active"); });
+            btn.classList.add("active");
+            displayProducts();
+        }
+
+        function addToCart(id) {
+            var product = products.find(function (p) { return p._id === id; });
+            if (!product) return;
+            var existing = cart.find(function (c) { return c._id === id; });
+            if (existing) { existing.qty++; } else { cart.push(Object.assign({}, product, { qty: 1 })); }
+            updateCart();
+            document.querySelectorAll(".card button").forEach(function (btn) {
+                if (btn.getAttribute("onclick") === "addToCart('" + id + "')") {
+                    btn.innerText = "Added!";
+                    setTimeout(function () { btn.innerHTML = "&#128722; Add to Cart"; }, 1000);
+                }
+            });
+        }
+
+        function changeQty(id, delta) {
+            var item = cart.find(function (c) { return c._id === id; });
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty <= 0) cart = cart.filter(function (c) { return c._id !== id; });
+            updateCart();
+        }
+
+        function updateCart() {
+            var list = document.getElementById("cart-items");
+            var totalEl = document.getElementById("total");
+            var countEl = document.getElementById("cart-count");
+            var total = 0, qty = 0;
+            if (!cart.length) {
+                list.innerHTML = "<li class='cart-empty'>Your cart is empty</li>";
+                totalEl.innerText = "0"; countEl.innerText = "0"; return;
+            }
+            list.innerHTML = cart.map(function (item) {
+                var sub = item.price * item.qty;
+                total += sub; qty += item.qty;
+                return '<li class="cart-item">' +
+                    '<div class="cart-item-img"><img src="' + item.image + '" alt="' + item.name + '"></div>' +
+                    '<div class="cart-item-info">' +
+                    '<span class="cart-item-name">' + item.name + '</span>' +
+                    '<span class="cart-item-price">&#8358;' + Number(item.price).toLocaleString() + ' each</span>' +
+                    '</div>' +
+                    '<div class="cart-item-qty">' +
+                    '<button class="qty-btn" onclick="changeQty(\'' + item._id + '\',-1)">&#8722;</button>' +
+                    '<span>' + item.qty + '</span>' +
+                    '<button class="qty-btn" onclick="changeQty(\'' + item._id + '\',1)">+</button>' +
+                    '</div>' +
+                    '<div class="cart-item-subtotal">&#8358;' + sub.toLocaleString() + '</div>' +
+                    '</li>';
+            }).join("");
+            totalEl.innerText = total.toLocaleString();
+            countEl.innerText = qty;
+        }
+
+        function openCart() { document.getElementById("cart-modal").style.display = "flex"; }
+        function closeCart() { document.getElementById("cart-modal").style.display = "none"; }
+
+        function checkout() {
+            if (!cart.length) return alert("Your cart is empty!");
+            var total = cart.reduce(function (s, i) { return s + i.price * i.qty; }, 0);
+            closeCart();
+            var handler = PaystackPop.setup({
+                key: "pk_test_fb3ef574cfd0e58d9deeeacc8c2660e06609addf",
+                email: "customer@helenmotherlandagro.com",
+                amount: total * 100,
+                currency: "NGN",
+                callback: function (response) {
+                    fetch(API + "/orders", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ items: cart, total: total, paymentRef: response.reference })
+                    }).catch(function () { });
+                    alert("Payment successful! Ref: " + response.reference);
+                    cart = [];
+                    updateCart();
+                },
+                onClose: function () {
+                    alert("Payment cancelled.");
+                }
+            });
+            handler.openIframe();
+        }
+
+        // Display products immediately on page load
+        displayProducts();
+
+        // Also try to load from API and refresh
+        fetch("http://localhost:5000/api/products")
+            .then(function (r) { return r.json(); })
+            .then(function (data) { if (Array.isArray(data) && data.length) { products = data; displayProducts(); } })
+            .catch(function () { });
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard – Helen Agro</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="dashboard-page">
+
+    <header>
+        <h1>🌍 Helen Motherland Agro – Admin Dashboard</h1>
+        <div>
+            <a href="../index.html" class="admin-link">View Store</a>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </header>
+
+    <main class="dashboard">
+
+        <section class="add-product">
+            <h2>Add New Product</h2>
+            <input type="text" id="name" placeholder="Product Name">
+            <input type="number" id="price" placeholder="Price (₦)">
+            <input type="text" id="category" placeholder="Category (grains, spices, tubers...)">
+            <input type="text" id="image" placeholder="Image URL">
+            <button onclick="addProduct()">Add Product</button>
+            <p id="add-msg"></p>
+        </section>
+
+        <section class="product-list">
+            <h2>All Products</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="productTable"></tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <script>
+        const API = "http://localhost:5000/api";
+        const token = localStorage.getItem("token");
+
+        // Guard: redirect to login if not authenticated
+        if (!token) window.location.href = "login.html";
+
+        async function loadProducts() {
+            const res = await fetch(`${API}/products`);
+            const products = await res.json();
+            const table = document.getElementById("productTable");
+            table.innerHTML = "";
+
+            if (!products.length) {
+                table.innerHTML = "<tr><td colspan='4'>No products yet.</td></tr>";
+                return;
+            }
+
+            products.forEach(p => {
+                table.innerHTML += `
+          <tr>
+            <td>${p.name}</td>
+            <td>₦${p.price}</td>
+            <td>${p.category || "-"}</td>
+            <td><button class="btn-delete" onclick="deleteProduct('${p._id}')">Delete</button></td>
+          </tr>
+        `;
+            });
+        }
+
+        async function addProduct() {
+            const name = document.getElementById("name").value.trim();
+            const price = document.getElementById("price").value.trim();
+            const category = document.getElementById("category").value.trim();
+            const image = document.getElementById("image").value.trim();
+            const msg = document.getElementById("add-msg");
+
+            if (!name || !price) { msg.innerText = "Name and price are required."; return; }
+
+            const res = await fetch(`${API}/products`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": token
+                },
+                body: JSON.stringify({ name, price: Number(price), category, image })
+            });
+
+            if (res.ok) {
+                msg.innerText = "✅ Product added!";
+                document.getElementById("name").value = "";
+                document.getElementById("price").value = "";
+                document.getElementById("category").value = "";
+                document.getElementById("image").value = "";
+                loadProducts();
+            } else {
+                msg.innerText = "❌ Failed to add product.";
+            }
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm("Delete this product?")) return;
+            await fetch(`${API}/products/${id}`, {
+                method: "DELETE",
+                headers: { "Authorization": token }
+            });
+            loadProducts();
+        }
+
+        function logout() {
+            localStorage.removeItem("token");
+            window.location.href = "login.html";
+        }
+
+        loadProducts();
+    </script>
+</body>
+
+</html>

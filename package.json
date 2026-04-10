@@ -13,12 +13,11 @@
   "license": "ISC",
   "author": "Ogaga",
   "type": "module",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node backend/src/server.js",
-    "seed": "node backend/seed.js"
+    "start": "node src/server.js",
+    "seed": "node seed.js"
   },
- 
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.9.0",

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login – Helen Agro</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="auth-page">
+
+    <div class="auth-box">
+        <h1>🌍 Helen Motherland Agro</h1>
+        <h2>Admin Login</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p id="error-msg" class="error"></p>
+        <a href="../index.html">← Back to Store</a>
+    </div>
+
+    <script>
+        // Redirect if already logged in
+        if (localStorage.getItem("token")) {
+            window.location.href = "dashboard.html";
+        }
+
+        async function login() {
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const errorMsg = document.getElementById("error-msg");
+            errorMsg.innerText = "";
+
+            if (!email || !password) {
+                errorMsg.innerText = "Please fill in all fields.";
+                return;
+            }
+
+            try {
+                const res = await fetch("http://localhost:5000/api/auth/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.token) {
+                    localStorage.setItem("token", data.token);
+                    window.location.href = "dashboard.html";
+                } else {
+                    errorMsg.innerText = data.message || "Invalid credentials";
+                }
+            } catch (err) {
+                errorMsg.innerText = "Server error. Make sure the backend is running.";
+            }
+        }
+    </script>
+</body>
+
+</html>

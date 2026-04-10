@@ -5,7 +5,7 @@ services:
     runtime: node
     rootDir: .
     buildCommand: npm install
-    startCommand: node backend/src/server.js
+    startCommand: node src/server.js
     plan: free
     envVars:
       - key: MONGODB_URI

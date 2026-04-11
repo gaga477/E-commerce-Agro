@@ -5,7 +5,7 @@ import app from "./app.js";
 import { connectDB } from "./config/db.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: resolve(__dirname, "../.env") });
+dotenv.config({ path: resolve(__dirname, ".env") });
 
 connectDB();
 

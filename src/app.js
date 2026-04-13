@@ -17,6 +17,10 @@ app.get("/", (req, res) => {
   res.sendFile(join(__dirname, "../public/index.html"));
 });
 
+app.get("/privacy-policy", (req, res) => {
+  res.sendFile(join(__dirname, "../public/pages/privacy-policy.html"));
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);

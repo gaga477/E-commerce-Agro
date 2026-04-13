@@ -1,0 +1,22 @@
+{
+  "name": "Helen Motherland Agro Export",
+  "short_name": "HelenAgro",
+  "description": "Authentic Nigerian food products delivered worldwide",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2d6a4f",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "images/helen.PNG",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/helen.PNG",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

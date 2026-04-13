@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Helen Motherland Agro Export | Global Nigerian Food Delivery</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2d6a4f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="HelenAgro">
+    <link rel="apple-touch-icon" href="images/helen.PNG">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8518181426533229"
      crossorigin="anonymous"></script>
 </head>
@@ -264,6 +270,13 @@
 
         // Display products immediately on page load
         displayProducts();
+
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(() => console.log('Service Worker registered'))
+                .catch((e) => console.log('SW error:', e));
+        }
 
         // Also try to load from API and refresh
         fetch("http://localhost:5000/api/products")

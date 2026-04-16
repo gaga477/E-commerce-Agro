@@ -278,12 +278,6 @@
                 .then(() => console.log('Service Worker registered'))
                 .catch((e) => console.log('SW error:', e));
         }
-
-        // Also try to load from API and refresh
-        fetch("/api/products")
-            .then(function (r) { return r.json(); })
-            .then(function (data) { if (Array.isArray(data) && data.length) { products = data; displayProducts(); } })
-            .catch(function () { });
     </script>
 
 

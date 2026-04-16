@@ -280,7 +280,7 @@
         }
 
         // Also try to load from API and refresh
-        fetch("http://localhost:5000/api/products")
+        fetch("/api/products")
             .then(function (r) { return r.json(); })
             .then(function (data) { if (Array.isArray(data) && data.length) { products = data; displayProducts(); } })
             .catch(function () { });
